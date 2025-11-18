@@ -1,0 +1,31 @@
+name: Deploy NestJS via SSH
+
+on:
+  workflow_dispatch:  # Trigger manually from GitHub
+
+jobs:
+  ssh-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.ACTIONS_SSH_PUBLIC_KEY }}" > ~/.ssh/authorized_keys
+          chmod 600 ~/.ssh/authorized_keys
+
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+
+      - name: Start SSH via tmate
+        uses: mxschmitt/action-tmate@v3
+        with:
+          ssh: true
+
+      - name: Keep job alive
+        run: sleep 3600
