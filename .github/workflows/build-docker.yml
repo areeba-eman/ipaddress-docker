@@ -29,3 +29,4 @@ jobs:
         run: |
           IMAGE_NAME=ghcr.io/${{ secrets.GHCR_USERNAME }}/ipaddress-app:latest
           docker push $IMAGE_NAME
+          
